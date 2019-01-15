@@ -6,14 +6,12 @@ import neopixel
 import sys
 import os
 
-
 # LED strip configuration:
 pixel_pin = board.D18
 num_pixels = 71
 ORDER = neopixel.GRB
 
 pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.2, auto_write=True, pixel_order=ORDER)
-
 
 with open("airports") as f:
     airports = f.readlines()
@@ -35,9 +33,7 @@ print(url)
 content = urllib.request.urlopen(url).read()
 #print(content)
 
-
 root = ET.fromstring(content)
-
 
 for metar in root.iter('METAR'):
 	if airportcode == "NULL":
@@ -45,7 +41,6 @@ for metar in root.iter('METAR'):
 	if metar.find('flight_category') is None:
 		print("Skipping")
 		continue
-
 	stationId = metar.find('station_id').text
 	flightCategory = metar.find('flight_category').text
 #	print(stationId, " ", flightCategory)
@@ -54,18 +49,15 @@ for metar in root.iter('METAR'):
 	else:
 		mydict[stationId] = flightCategory
 	
-
 #print(mydict)
 
 i = 0
 for airportcode in airports:
 	if airportcode == "NULL":
-		i = i +1
+		i = i+1
 		continue
-
 	flightCategory = mydict.get(airportcode,"No")
 #	print(airportcode, " ", flightCateory)
-
 	if  flightCategory != "No":
 		if flightCategory == "VFR":
 #			print("VFR")
@@ -82,9 +74,7 @@ for airportcode in airports:
 	else:
 		pixels[i] = (0,0,0)
 		print(airportcode, " N/A")
-
 	print("Setting light ", str(i) , " for " , airportcode , " " , flightCategory)
 #	pixels.show()
-	
 	i = i+1
 print("fin")
