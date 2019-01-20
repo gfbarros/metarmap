@@ -6,14 +6,15 @@ import neopixel
 import sys
 import os
 
-# LED strip configuration:
+#configuration:
 pixel_pin = board.D18
-num_pixels = 71
+num_pixels = 70
 ORDER = neopixel.GRB
+airportfile = "/home/pi/metarmap/airports"
 
-pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.2, auto_write=True, pixel_order=ORDER)
+pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.4, auto_write=False, pixel_order=ORDER)
 
-with open("airports") as f:
+with open(airportfile) as f:
     airports = f.readlines()
 airports = [x.strip() for x in airports]
 #print airports 
@@ -29,6 +30,7 @@ for airportcode in airports:
 #	print(airportcode)
 	url = url + airportcode + ","
 
+print(time.asctime(time.localtime()))
 print(url)
 content = urllib.request.urlopen(url).read()
 #print(content)
@@ -75,6 +77,6 @@ for airportcode in airports:
 		pixels[i] = (0,0,0)
 		print(airportcode, " N/A")
 	print("Setting light ", str(i) , " for " , airportcode , " " , flightCategory)
-#	pixels.show()
+	pixels.show()
 	i = i+1
 print("fin")
